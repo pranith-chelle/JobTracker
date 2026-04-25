@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Job Tracker</h1>
+        <p class="subtitle">Track Your Dream Job Journey ✨</p>
+
+        <!-- Stats Dashboard -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>{{ total }}</h3>
+                <p>Total</p>
+            </div>
+            <div class="stat-card applied-card">
+                <h3>{{ applied }}</h3>
+                <p>Applied</p>
+            </div>
+            <div class="stat-card interview-card">
+                <h3>{{ interview }}</h3>
+                <p>Interview</p>
+            </div>
+            <div class="stat-card offer-card">
+                <h3>{{ offer }}</h3>
+                <p>Offer</p>
+            </div>
+            <div class="stat-card rejected-card">
+                <h3>{{ rejected }}</h3>
+                <p>Rejected</p>
+            </div>
+        </div>
+
+        <!-- Add Job Form Card -->
+        <div class="form-card">
+            <h2>➕ Add New Application</h2>
+            <form action="/add" method="POST">
+                <div class="form-grid">
+                    <input type="text" name="company" placeholder="Company Name" required>
+                    <input type="text" name="role" placeholder="Job Role" required>
+                    <input type="date" name="date" required>
+                    <select name="status">
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+                <button type="submit">🚀 Add Application</button>
+            </form>
+        </div>
+
+        <!-- AI Analyzer Card -->
+        <div class="form-card">
+            <h2>🤖 AI Resume Analyzer</h2>
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
+                <div style="margin-bottom: 15px;">
+                    <input type="file" name="resume" accept=".pdf" required
+                           style="color: white;">
+                </div>
+                <textarea name="job_desc" placeholder="Paste Job Description here..."
+                          required rows="5"
+                          style="width:100%; padding:12px; background:rgba(255,255,255,0.07);
+                                 border:1px solid rgba(167,139,250,0.4); border-radius:10px;
+                                 color:white; font-size:0.95rem; outline:none; resize:vertical;">
+                </textarea>
+                <br><br>
+                <button type="submit">🤖 Analyze with AI</button>
+            </form>
+        </div>
+
+        <!-- Table Card -->
+        <div class="table-card">
+            <h2>📋 My Applications</h2>
+            {% if jobs %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company</th>
+                        <th>Role</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>{{ job[1] }}</td>
+                        <td>{{ job[2] }}</td>
+                        <td>{{ job[3] }}</td>
+                        <td>
+                            {% if job[4] == 'Applied' %}
+                                <span class="status-applied">Applied</span>
+                            {% elif job[4] == 'Interview' %}
+                                <span class="status-interview">Interview</span>
+                            {% elif job[4] == 'Offer' %}
+                                <span class="status-offer">Offer</span>
+                            {% else %}
+                                <span class="status-rejected">Rejected</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/delete/{{ job[0] }}"
+                               onclick="return confirm('Delete this job?')">
+                                <button class="delete-btn">🗑️ Delete</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="empty-msg">No applications yet. Add your first one! 🎯</p>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>AI Analysis 🤖</h1>
+        <p class="subtitle">Gemini AI powered resume analysis ✨</p>
+
+        <div class="form-card">
+            <h2>📊 Analysis Result</h2>
+            <div class="analysis-box">
+                {{ analysis | safe }}
+            </div>
+            <br>
+            <a href="/">
+                <button>⬅️ Back to Tracker</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
